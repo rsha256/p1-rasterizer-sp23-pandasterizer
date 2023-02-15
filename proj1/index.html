@@ -20,6 +20,15 @@
 	margin-right: auto;
 	width: 75%;
   }
+  table {
+	border: 1px solid;
+  }
+  th {
+	border: 1px solid;
+  }
+  td {
+	border: 1px solid;
+  }
 </style>
 <title>CS 184 Project 1: Rasterizer</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -63,18 +72,29 @@
 	</li>
 	<li>
 		<i>Extra credit: </i>
-		We implemented a few optimizations to our rasterization algorithm to speed up the rendering process.
-		<ol>
-			<li>
-				We first use <code>#pragma omp parallel for</code> to parallelize the outer for loop that iterates over each pixel in the bounding box.
-			</li>
-			<li>
-				We then use the <code>collapse(4)</code> clause to parallelize the inner for loops that iterates over each vertex in the triangle as well.
-			</li>
-			<li>
-				Finally we made sure to move calculations that were the same each iteration (such as the 6 perpendicular vector components from the 3 vectors) outside of the <code>for</code> loop.
-			</li>
-		</ol>
+		We implemented a few optimizations to our rasterization algorithm to speed up the rendering process. We measured this with C++'s <code>std::clock()</code> function, which returns the number of clock ticks that have elapsed since the program started.
+		<table>
+			<tr>
+				<th>Optimization</th>
+				<th>Speedup</th>
+			</tr>
+			<tr>
+				<td>No optimizations</td>
+				<td>Approximately 9.9e-4ms to run on default settings</td>
+			</tr>
+			<tr>
+				<td>First we made sure to move calculations that were the same each iteration (such as the 6 perpendicular vector components from the 3 vectors) outside of the <code>for</code> loop</td>
+				<td>2% speedup</td>
+			</tr>
+			<tr>
+				<td>We first use <code>#pragma omp parallel for</code> to parallelize the 2 outer for loops which iterate over each pixel in the bounding box</td>
+				<td>14% speedup</td>
+			</tr>
+			<tr>
+				<td>We then use the <code>#pragma omp parallel for collapse(4)</code> clause to parallelize the inner for loops as well</td>
+				<td>22% speedup</td>
+			</tr>
+		</table>
 	</li>
 </ul>
 
@@ -120,6 +140,9 @@
 		This in turn smooths out the jaggies and the fragmentations.
 	</li>
 </ul>
+
+<i>Extra Credit:</i>
+We tried doing supersampling with a different method, which is to simply take the average of the colors of the pixels that lie within the triangle. This is a much simpler method, but it does not work as well as supersampling with a higher granularity. Other approached we did ended up giving the same result such as using a different interpolation method, so we decided to stick with supersampling in our final submission since the images are the exact same.
 
 <br />
 <hr />
@@ -250,6 +273,13 @@ and linearly interpolated the resulting colors based off of the float level.
   </table>
 </div>
 
+<i>Extra Credit:</i> 
+See images above!
+
+<br />
+<hr />
+<br />
+<br />
 
 <h2 align="middle">Section III: Art Competition</h2>
 <p>We are participating in the optional art competition, with the following image!</p>
@@ -257,7 +287,9 @@ and linearly interpolated the resulting colors based off of the float level.
 
 <h3 align="middle">Part 7: Draw something interesting!</h3>
 <img src="img/competition.png" alt="EC">
-
+<i>Extra Credit:</i> 
+We made this by supersampling in an incorrect way: we counted the proportion of the pixel that was covered by the triangle, and then multiplied the color of the pixel by that proportion.
+We did this in the rasterize function, without barycentric coordinates. We then swapped the way we paired alpha, beta, and gamma for a cool effect.
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
