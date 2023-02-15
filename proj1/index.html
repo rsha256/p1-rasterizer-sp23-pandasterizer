@@ -142,7 +142,25 @@
 </ul>
 
 <i>Extra Credit:</i>
-We tried doing supersampling with a different method, which is to simply take the average of the colors of the pixels that lie within the triangle. This is a much simpler method, but it does not work as well as supersampling with a higher granularity. Other approached we did ended up giving the same result such as using a different interpolation method, so we decided to stick with supersampling in our final submission since the images are the exact same.
+We tried doing supersampling with a different method, which is to simply take the average of the colors of the pixels that lie within the triangle. This is a much simpler method, but it does not work as well as supersampling with a higher granularity. Other approached we did ended up giving the same result such as using a different interpolation method (specifically we tried the low discrepancy method of using a Halton sequence to generate the sample points within the pixel instead of a uniform grid of points within the pixel as we did in our supersampling algorithm), so we decided to stick with supersampling in our final submission since the images are the exact same.
+<div align="middle">
+	<table style="width=100%">
+	  <tr>
+		<td>
+		  <img src="img/basic-test4.png" align="middle"/>
+		  <figcaption align="middle">Rate 1</figcaption>
+		</td>
+		<td>
+		  <img src="img/basic-test4-4.png" align="middle"/>
+		  <figcaption align="middle">Rate 9</figcaption>
+		</td>
+		<td>
+		  <img src="img/basic-test4-16.png" align="middle"/>
+		  <figcaption align="middle">Rate 16</figcaption>
+		</td>
+	  </tr>
+	</table>
+</div>
 
 <br />
 <hr />
